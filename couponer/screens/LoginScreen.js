@@ -4,11 +4,13 @@ import {
   View,
   Dimensions,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  AsyncStorage
 } from "react-native";
 import styles from "../styles";
 import checkPasswordStrength from "../library/checkPasswordStrength";
 import validateEmail from "../library/validateEmail";
+import action from '../action';
 
 const width = Dimensions.get("window").width; //full width
 
@@ -23,31 +25,44 @@ export default class LoginScreen extends Component {
       passInputStyle: {
         marginBottom: 40,
         marginLeft: 20,
+        marginRight: 20,
         height: 20,
-        width: width - 100,
+        width: width - 40,
         borderBottomWidth: 2,
-        borderBottomColor: "#fde428"
+        borderBottomColor: "lightgrey"
       },
       emailInputStyle: {
         marginLeft: 20,
+        marginRight: 20,
+        marginBottom: 40,
         height: 20,
-        width: width - 100,
+        width: width - 40,
         borderBottomWidth: 2,
-        borderBottomColor: "#fde428"
+        borderBottomColor: "lightgrey"
       }
     };
   }
-  
+
   static navigationOptions = {
     header: null,
   };
 
-  login = () => alert("login");
+  login = async () => {
+    try {
+      await AsyncStorage.setItem('loggedinKey', 'adasasdasdasdasd');
+    } catch (error) {
+      // Error saving data
+    }
+  }
+
+  test = action("login");
 
   render() {
     return (
       <View style={styles.container}>
+      <View style={styles.topPadding}></View>
         <Text style={styles.genericText}>Email</Text>
+        <Text style={this.state.validEmail ? styles.validCheck : styles.invalidX}>{this.state.validEmail ? <Text>&#10003;</Text> : <Text>&#x2718;</Text>}</Text>
         <TextInput
           style={this.state.emailInputStyle}
           onChangeText={email =>
@@ -56,6 +71,7 @@ export default class LoginScreen extends Component {
           value={this.state.email}
         />
         <Text style={styles.genericText}>Password</Text>
+        <Text style={this.state.validPass ? styles.validCheck : styles.invalidX}>{this.state.validPass ? <Text>&#10003;</Text> : <Text>&#x2718;</Text>}</Text>
         <TextInput
           style={this.state.passInputStyle}
           onChangeText={password =>
@@ -77,7 +93,7 @@ export default class LoginScreen extends Component {
         >
           <Text style={styles.text}> Login </Text>
         </TouchableOpacity>
-        <Text style={styles.hyperlinkText}>Forgot password?</Text>
+        <Text style={styles.hyperlinkText} onPress={this.test}>Forgot password?</Text>
       </View>
     );
   }

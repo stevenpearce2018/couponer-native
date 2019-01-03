@@ -1,16 +1,26 @@
 import React from 'react';
-import { Platform, StatusBar, Text, View } from 'react-native';
+import { Platform, StatusBar, Text, View, AsyncStorage } from 'react-native';
 import { AppLoading, Asset, Font, Icon } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
 import styles from './styles';
+import action from "./action";
 
 export default class App extends React.Component {
   state = {
     drawerOpen: false,
     isLoadingComplete: false,
+    loggedinKey: ""
   };
 
   toggleDrawer = () => this.setState({ drawerOpen: !this.state.drawerOpen });
+
+  login = loggedinKey => this.setState({ loggedinKey: loggedinKey});
+
+  componentDidMount = () => AsyncStorage.getItem('loggedinKey', (err, result) => {
+    this.setState({ loggedinKey: result});
+  });
+
+  test = action("appjs test");
 
   render() {
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
@@ -26,11 +36,11 @@ export default class App extends React.Component {
         <View style={styles.container}>
           <View style={styles.header}>
           <Text style={styles.title}>
-            Unlimited Couponer
+            Unlimited Couponer loggedinKey: {this.state.loggedinKey}
           </Text>
           </View>
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          <AppNavigator />
+          <AppNavigator/>
         </View>
       );
     }

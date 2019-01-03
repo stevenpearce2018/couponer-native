@@ -48,19 +48,35 @@ const styles = StyleSheet.create({
   },
   buttonInvalid: {
     alignItems: "center",
-    backgroundColor: "#ff9999",
-    marginRight: 78,
+    backgroundColor: "lightgrey",
+    marginRight: 20,
     marginLeft: 20,
     padding: 10,
-    marginBottom: 2
+    marginBottom: 20,
+    borderRadius: 20,
+  },
+  buttonUnfocused: {
+    alignItems: "center",
+    backgroundColor: "#ffffcc",
+    marginRight: 20,
+    marginLeft: 20,
+    padding: 10,
+    marginBottom: 20,
+    borderColor: "#fde428",
+    borderWidth: 2,
+    borderRadius: 20,
+  },
+  topPadding: {
+    padding: 20,
   },
   button: {
     alignItems: "center",
-    backgroundColor: "green",
-    marginRight: 78,
+    backgroundColor: "#fde428",
+    marginRight: 20,
     marginLeft: 20,
     padding: 10,
-    marginBottom: 2
+    marginBottom: 20,
+    borderRadius: 20,
   },
   hide: {
     display: "none"
@@ -76,6 +92,10 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#002e5b"
   },
+  inlineText: {
+    flexDirection: "row",
+    flexWrap: "wrap"
+  },
   genericHeader: {
     // lineHeight: 1.5, 
     // fontSize: "1rem",
@@ -85,8 +105,24 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     color: "#002e5b"
   },
+  invalidX: {
+    fontWeight: "bold",
+    textAlign: "right",
+    marginRight: 20,
+    marginTop: -40,
+    marginBottom: 20,
+    color: "red"
+  },
+  validCheck: {
+    fontWeight: "bold",
+    textAlign: "right",
+    marginRight: 20,
+    marginTop: -40,
+    marginBottom: 20,
+    color: "green"
+  },
   homeheader: {
-    paddingTop: 30,
+    paddingTop: 10,
     fontWeight: "bold",
     marginVertical: 1,
     textAlign: "center",
@@ -95,6 +131,7 @@ const styles = StyleSheet.create({
   genericText: {
     // lineHeight: 1.5,
     // fontSize: 1.125,
+    marginBottom: 20,
     fontWeight: "bold",
     marginVertical: 1,
     textAlign: "left",
@@ -106,7 +143,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     // fontSize: 1.125,
     fontWeight: "bold",
-    marginRight: 40
   }
 });
 

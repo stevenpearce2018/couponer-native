@@ -22,34 +22,47 @@ export default class SignupScreen extends Component {
       confirmPassword: "",
       validPass: false,
       validEmail: false,
+      validPhone: false,
+      validPhoneState: false,
       role: " Customer",
       passInputStyle: {
-        marginBottom: 40,
+        marginBottom: 30,
         marginLeft: 20,
         height: 20,
-        width: width - 100,
+        width: width - 40,
         borderBottomWidth: 2,
-        borderBottomColor: "#fde428"
+        borderBottomColor: "lightgrey"
       },
       emailInputStyle: {
         marginLeft: 20,
+        marginBottom: 40,
         height: 20,
-        width: width - 100,
+        width: width - 40,
         borderBottomWidth: 2,
-        borderBottomColor: "#fde428"
+        borderBottomColor: "lightgrey"
       },
       buisnessName: "",
       subscriptionLength: "",
       phoneNumber: ""
     };
+    this.login = this.login.bind(this);
+    this.validatePhone = this.validatePhone.bind(this);
   }
   
   static navigationOptions = {
     header: null,
   };
 
-  login = () => alert("login");
-  
+  login = () => {
+    if (!this.state.validEmail && !this.state.validPass) return alert("You need a valid email and password to signup!")
+    else if (!this.state.validEmail) return alert("You need a valid email to signup!")
+    else if (!this.state.validPass) return alert("You need a valid password to signup!")
+  }
+
+  validatePhone = () => {
+    if (!this.state.validPhoneState) return alert("You need to enter a valid phone number!");
+  }
+
   setCustomer = () => this.setState({role: " Customer"})
   
   setBuisnessOwner = () => this.setState({role: " Buisness Owner"})
@@ -62,7 +75,7 @@ export default class SignupScreen extends Component {
           style={
               this.state.role === " Customer"
               ? styles.button
-              : styles.buttonInvalid
+              : styles.buttonUnfocused
           }
           onPress={this.setCustomer}
         >
@@ -72,13 +85,14 @@ export default class SignupScreen extends Component {
           style={
             this.state.role === " Buisness Owner"
               ? styles.button
-              : styles.buttonInvalid
+              : styles.buttonUnfocused
           }
           onPress={this.setBuisnessOwner}
         >
           <Text style={styles.text}> Buisness Owner </Text>
         </TouchableOpacity>
         <Text style={styles.genericText}>Email</Text>
+        <Text style={this.state.validEmail ? styles.validCheck : styles.invalidX}>{this.state.validEmail ? <Text>&#10003;</Text> : <Text>&#x2718;</Text>}</Text>
         <TextInput
           style={this.state.passInputStyle}
           onChangeText={email =>
@@ -87,6 +101,7 @@ export default class SignupScreen extends Component {
           value={this.state.email}
         />
         <Text style={styles.genericText}>Password</Text>
+        <Text style={this.state.validPass ? styles.validCheck : styles.invalidX}>{this.state.validEmail ? <Text>&#10003;</Text> : <Text>&#x2718;</Text>}</Text>
         <TextInput
           style={this.state.passInputStyle}
           onChangeText={password =>
@@ -99,6 +114,7 @@ export default class SignupScreen extends Component {
           secureTextEntry={true}
         />
         <Text style={styles.genericText}>Confirm Password</Text>
+        <Text style={this.state.validPass ? styles.validCheck : styles.invalidX}>{this.state.validPass ? <Text>&#10003;</Text> : <Text>&#x2718;</Text>}</Text>
         <TextInput
           style={this.state.passInputStyle}
           onChangeText={confirmPassword =>
@@ -135,8 +151,9 @@ export default class SignupScreen extends Component {
           value={this.state.role === " Customer" ? this.state.subscriptionLength : this.state.buisnessName}
         />
         <Text style={styles.genericText}>Phone Number</Text>
+        <Text style={this.state.validPhoneState && !this.state.validPhone ? styles.validCheck : styles.invalidX}>{this.state.validPhoneState && !this.state.validPhone ? <Text>&#10003;</Text> : <Text>&#x2718;</Text>}</Text>
         <TextInput
-          style={this.state.passInputStyle}
+          style={this.state.emailInputStyle}
           onChangeText={phoneNumber =>
             this.setState({
                 phoneNumber: phoneNumber,
@@ -146,13 +163,15 @@ export default class SignupScreen extends Component {
         />
         <TouchableOpacity
           style={
-            this.state.validPass && this.state.validEmail
+            this.state.validPhoneState && !this.state.validPhone ?
+              styles.button :
+            this.state.validPhone && this.state.validPass && this.state.validEmail && this.state.validPhoneState
               ? styles.button
               : styles.buttonInvalid
           }
-          onPress={this.login}
+          onPress={this.state.validPhone ? this.login : this.validatePhone}
         >
-          <Text style={styles.text}> Login </Text>
+        <Text style={styles.text}>{this.state.validPhone ? "Signup" : "Validate Phone Number"} </Text>
         </TouchableOpacity>
         <Text style={styles.hyperlinkText}>Forgot password?</Text>
         </ScrollView>

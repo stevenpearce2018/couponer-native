@@ -16,24 +16,26 @@ export default class SearchScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: "",
-      password: "",
-      validPass: false,
-      validEmail: false,
+      city: "",
+      zip: "",
+      keywords: "",
       passInputStyle: {
         marginBottom: 40,
+        marginRight: 20,
         marginLeft: 20,
         height: 20,
-        width: width - 100,
+        width: width - 40,
         borderBottomWidth: 2,
-        borderBottomColor: "#fde428"
+        borderBottomColor: "lightgrey"
       },
       emailInputStyle: {
         marginLeft: 20,
+        marginRight: 20,
+        marginBottom: 40,
         height: 20,
-        width: width - 100,
+        width: width - 40,
         borderBottomWidth: 2,
-        borderBottomColor: "#fde428"
+        borderBottomColor: "lightgrey"
       }
     };
   }
@@ -47,35 +49,44 @@ export default class SearchScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.genericText}>Email</Text>
+        <View style={styles.topPadding}></View>
+        <Text style={styles.genericText}>City</Text>
         <TextInput
           style={this.state.emailInputStyle}
-          onChangeText={email =>
-            this.setState({ email: email, validEmail: validateEmail(email) })
+          onChangeText={city =>
+            this.setState({ city: city })
           }
           value={this.state.email}
         />
-        <Text style={styles.genericText}>Password</Text>
+        <Text style={styles.genericText}>Zip</Text>
         <TextInput
           style={this.state.passInputStyle}
-          onChangeText={password =>
+          onChangeText={zip =>
             this.setState({
-              password: password,
-              validPass: checkPasswordStrength(password)
+              zip: zip,
             })
           }
-          value={this.state.password}
-          secureTextEntry={true}
+          value={this.state.zip}
+        />
+        <Text style={styles.genericText}>Keywords</Text>
+        <TextInput
+          style={this.state.passInputStyle}
+          onChangeText={keywords =>
+            this.setState({
+              keywords: keywords,
+            })
+          }
+          value={this.state.keywords}
         />
         <TouchableOpacity
           style={
-            this.state.validPass && this.state.validEmail
+            this.state.keywords || this.state.zip || this.state.city
               ? styles.button
               : styles.buttonInvalid
           }
           onPress={this.login}
         >
-          <Text style={styles.text}> Login </Text>
+          <Text style={styles.text}> Search </Text>
         </TouchableOpacity>
         <Text style={styles.hyperlinkText}>Forgot password?</Text>
       </View>
