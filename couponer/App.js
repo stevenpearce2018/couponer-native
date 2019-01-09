@@ -3,13 +3,29 @@ import { Platform, StatusBar, Text, View, AsyncStorage } from 'react-native';
 import { AppLoading, Asset, Font, Icon } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
 import styles from './styles';
-import { createStore, applyMiddleware } from 'redux';
-import { Provider, connect } from 'react-redux';
-import axios from 'axios';
-import axiosMiddleware from 'redux-axios-middleware';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
 
-import reducer from './reducer';
+const initialState = {
+  count: 0
+};
 
+const reducer = (state = initialState, action) => {
+  switch(action.type) {
+    case 'INCREMENT':
+      return {
+        count: state.count + 1
+      };
+    case 'DECREMENT':
+      return {
+        count: state.count - 1
+      };
+    default:
+      return state;
+  }
+}
+
+const store = createStore(reducer);
 
 export default class App extends React.Component {
   state = {
@@ -37,6 +53,7 @@ export default class App extends React.Component {
       );
     } else {
       return (
+        <Provider store={store}>
         <View style={styles.container}>
           <View style={styles.header}>
           <Text style={styles.title}>
@@ -46,6 +63,7 @@ export default class App extends React.Component {
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
           <AppNavigator/>
         </View>
+        </Provider>
       );
     }
   }

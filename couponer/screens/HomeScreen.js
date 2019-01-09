@@ -9,6 +9,8 @@ import {
   TouchableOpacity
 } from 'react-native';
 import styles from "../styles";
+import { connect } from 'react-redux';
+
 // import CouponsMaker from "../library/couponsMaker";
 const width = Dimensions.get("window").width; //full width
 
@@ -97,7 +99,7 @@ let couponData2 = JSON.parse(JSON.stringify(couponData));
 couponData2[0].title = "title 3"
 couponData2[1].title = "title 4"
 
-export default class HomeScreen extends React.Component {
+class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -125,12 +127,31 @@ export default class HomeScreen extends React.Component {
   back = () => {
     this.setState({coupons: CouponsMaker(couponData)})
   }
+  increment = () => {
+    this.props.dispatch({ type: 'INCREMENT' });
+  }
+
+  decrement = () => {
+    this.props.dispatch({ type: 'DECREMENT' });
+  }
 
   render() {
     return (
       <View style={styles.container}>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-            <Text style={styles.homeheader}>Coupons Near You &#x2718; &#10003;</Text>
+            <Text style={styles.homeheader}>Coupons Near You {this.props.count}</Text>
+          <TouchableOpacity
+          onPress={this.decrement
+          }
+        >
+          <Text> _ </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={this.increment
+          }
+        >
+          <Text> + </Text>
+        </TouchableOpacity>
             <View style={styles.contentContainer}>{this.state.coupons}</View>
 
         <TouchableOpacity
@@ -150,3 +171,8 @@ export default class HomeScreen extends React.Component {
     );
   }
 }
+
+
+const mapStateToProps = state => ({ count: state.count })
+
+export default connect(mapStateToProps)(HomeScreen);

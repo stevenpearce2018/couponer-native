@@ -1,8 +1,9 @@
 import React from "react";
 import styles from "../styles";
 import { Text, View , ScrollView} from "react-native";
+import { connect } from 'react-redux';
 
-export default class AboutScreen extends React.Component {
+class AboutScreen extends React.Component {
   static navigationOptions = {
     header: null,
   };
@@ -10,7 +11,7 @@ export default class AboutScreen extends React.Component {
     return (
       <View style={styles.container}>
           <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-          <Text style={styles.genericHeader}>What we do</Text>
+          <Text style={styles.genericHeader}>What we do {this.props.count}</Text>
           <Text style={styles.genericText}>
           UnlimitedCouponer is meant to be a buisness and consumer friendly way of
           connecting customers with unique products and experiences.
@@ -42,3 +43,9 @@ export default class AboutScreen extends React.Component {
     );
   }
 };
+
+
+
+const mapStateToProps = state => ({ count: state.count })
+
+export default connect(mapStateToProps)(AboutScreen);

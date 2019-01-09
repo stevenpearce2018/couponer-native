@@ -10,10 +10,11 @@ import {
 import styles from "../styles";
 import checkPasswordStrength from "../library/checkPasswordStrength";
 import validateEmail from "../library/validateEmail";
+import { connect } from 'react-redux';
 
 const width = Dimensions.get("window").width; //full width
 
-export default class LoginScreen extends Component {
+class LoginScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -95,3 +96,8 @@ export default class LoginScreen extends Component {
     );
   }
 }
+
+
+const mapStateToProps = state => ({ count: state.count })
+
+export default connect(mapStateToProps)(LoginScreen);
