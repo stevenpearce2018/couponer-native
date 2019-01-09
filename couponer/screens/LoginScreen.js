@@ -10,7 +10,6 @@ import {
 import styles from "../styles";
 import checkPasswordStrength from "../library/checkPasswordStrength";
 import validateEmail from "../library/validateEmail";
-import action from '../action';
 
 const width = Dimensions.get("window").width; //full width
 
@@ -54,8 +53,6 @@ export default class LoginScreen extends Component {
       // Error saving data
     }
   }
-
-  test = action("login");
 
   render() {
     return (
