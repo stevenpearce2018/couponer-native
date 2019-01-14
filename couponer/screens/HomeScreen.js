@@ -127,19 +127,21 @@ class HomeScreen extends React.Component {
   back = () => {
     this.setState({coupons: CouponsMaker(couponData)})
   }
+
   increment = () => {
-    this.props.dispatch({ type: 'INCREMENT' });
+    this.props.dispatch({ type: 'UPHOMEPAGE' });
   }
 
   decrement = () => {
-    this.props.dispatch({ type: 'DECREMENT' });
+    this.props.dispatch({ type: 'DOWNHOMEPAGE' });
   }
 
   render() {
     return (
       <View style={styles.container}>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-            <Text style={styles.homeheader}>Coupons Near You {this.props.count}</Text>
+            <Text style={styles.homeheader}>Coupons Near You</Text>
+            <Text style={styles.homeheader}>Page {this.props.homePageNumber}</Text>
           <TouchableOpacity
           onPress={this.decrement
           }
@@ -173,6 +175,6 @@ class HomeScreen extends React.Component {
 }
 
 
-const mapStateToProps = state => ({ count: state.count })
+const mapStateToProps = state => ({ homePageNumber: state.homePageNumber, count: state.count, email: state.email, loggedinKey: state.loggedinKey })
 
 export default connect(mapStateToProps)(HomeScreen);

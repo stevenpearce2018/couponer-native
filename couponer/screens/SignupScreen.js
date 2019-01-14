@@ -43,7 +43,7 @@ class SignupScreen extends Component {
         borderBottomColor: "lightgrey"
       },
       buisnessName: "",
-      subscriptionLength: "",
+      // subscriptionLength: "",
       phoneNumber: ""
     };
     this.login = this.login.bind(this);
@@ -137,20 +137,21 @@ class SignupScreen extends Component {
           }
           value={this.state.city}
         />
-        <Text style={styles.genericText}> {this.state.role === " Customer" ? "Subcription Length" : "Buisness Name"} </Text>
-        <TextInput
-          style={this.state.passInputStyle}
-          onChangeText={value =>
-            this.state.role === " Customer" ?
-            this.setState({
-                subscriptionLength: value,
-            }) : 
-            this.setState({
+        {this.state.role !== " Customer" ? 
+        <View>
+        <Text style={styles.genericText}>Buisness Name</Text>
+          <TextInput
+            style={this.state.passInputStyle}
+            onChangeText={value =>
+              this.setState({
                 buisnessName: value,
-            })
-          }
-          value={this.state.role === " Customer" ? this.state.subscriptionLength : this.state.buisnessName}
-        />
+              })
+            }
+            value={this.state.buisnessName}
+            />
+          </View> :
+          <View></View>
+        } 
         <Text style={styles.genericText}>Phone Number</Text>
         <Text style={this.state.validPhoneState && !this.state.validPhone ? styles.validCheck : styles.invalidX}>{this.state.validPhoneState && !this.state.validPhone ? <Text>&#10003;</Text> : <Text>&#x2718;</Text>}</Text>
         <TextInput
@@ -181,6 +182,6 @@ class SignupScreen extends Component {
   }
 }
 
-const mapStateToProps = state => ({ count: state.count })
+const mapStateToProps = state => ({ count: state.count, email: state.email, loggedinKey: state.loggedinKey })
 
-export default connect(mapStateToProps)(SearchScreen);
+export default connect(mapStateToProps)(SignupScreen);

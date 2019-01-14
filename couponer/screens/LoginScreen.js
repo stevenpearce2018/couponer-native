@@ -5,7 +5,7 @@ import {
   Dimensions,
   TextInput,
   TouchableOpacity,
-  AsyncStorage
+  Alert
 } from "react-native";
 import styles from "../styles";
 import checkPasswordStrength from "../library/checkPasswordStrength";
@@ -41,19 +41,14 @@ class LoginScreen extends Component {
         borderBottomColor: "lightgrey"
       }
     };
+    this.login = this.login.bind(this)
   }
 
   static navigationOptions = {
     header: null,
   };
 
-  login = async () => {
-    try {
-      await AsyncStorage.setItem('loggedinKey', 'adasasdasdasdasd');
-    } catch (error) {
-      // Error saving data
-    }
-  }
+  login = async () => this.props.dispatch({ type: 'LOGIN', email: this.state.email});
 
   render() {
     return (
@@ -87,7 +82,14 @@ class LoginScreen extends Component {
               ? styles.button
               : styles.buttonInvalid
           }
-          onPress={this.login}
+          onPress={(this.state.validPass && this.state.validEmail) ? this.login : () => Alert.alert(
+            "Sorry",
+            "You Must Enter a Valid Email and Password",
+            [
+              {text: 'OK'},
+            ],
+            { cancelable: false }
+          )}
         >
           <Text style={styles.text}> Login </Text>
         </TouchableOpacity>
@@ -98,6 +100,6 @@ class LoginScreen extends Component {
 }
 
 
-const mapStateToProps = state => ({ count: state.count })
+const mapStateToProps = state => ({ count: state.count, email: state.email, loggedinKey: state.loggedinKey })
 
 export default connect(mapStateToProps)(LoginScreen);

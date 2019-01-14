@@ -1,46 +1,13 @@
 import React from 'react';
-import { Platform, StatusBar, Text, View, AsyncStorage } from 'react-native';
 import { AppLoading, Asset, Font, Icon } from 'expo';
-import AppNavigator from './navigation/AppNavigator';
-import styles from './styles';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import SubApp from './SubApp';
+import store from './store';
 
-const initialState = {
-  count: 0
-};
-
-const reducer = (state = initialState, action) => {
-  switch(action.type) {
-    case 'INCREMENT':
-      return {
-        count: state.count + 1
-      };
-    case 'DECREMENT':
-      return {
-        count: state.count - 1
-      };
-    default:
-      return state;
-  }
-}
-
-const store = createStore(reducer);
-
-export default class App extends React.Component {
+class App extends React.Component {
   state = {
-    drawerOpen: false,
     isLoadingComplete: false,
-    loggedinKey: ""
   };
-
-  toggleDrawer = () => this.setState({ drawerOpen: !this.state.drawerOpen });
-
-  login = loggedinKey => this.setState({ loggedinKey: loggedinKey});
-
-  componentDidMount = () => AsyncStorage.getItem('loggedinKey', (err, result) => {
-    this.setState({ loggedinKey: result});
-  });
 
   render() {
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
@@ -54,15 +21,7 @@ export default class App extends React.Component {
     } else {
       return (
         <Provider store={store}>
-        <View style={styles.container}>
-          <View style={styles.header}>
-          <Text style={styles.title}>
-            Unlimited Couponer
-          </Text>
-          </View>
-          {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          <AppNavigator/>
-        </View>
+          <SubApp/>
         </Provider>
       );
     }
@@ -93,3 +52,4 @@ export default class App extends React.Component {
   _handleFinishLoading = () => this.setState({ isLoadingComplete: true });
 }
 
+export default App;
