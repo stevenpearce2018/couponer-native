@@ -9,7 +9,19 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginBottom:20,
   },
+  navbar: {
+    padding: 5,
+    maxWidth: width,
+    backgroundColor: "#fde428",
+    flexDirection: "row",
+    marginBottom:20,
+  },
   container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    marginBottom:30
+  },
+  navContainer: {
     flex: 1,
     backgroundColor: '#fff',
   },
@@ -27,6 +39,16 @@ const styles = StyleSheet.create({
     marginVertical: 0,
     textAlign: "right",
     color: "#002e5b"
+  },
+  arrow: {
+    textAlign: "center",
+    fontWeight: "bold",
+    fontSize: 55,
+  },
+  arrowContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   menu: {
     textAlign: "right",

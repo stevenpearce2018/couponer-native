@@ -6,10 +6,13 @@ import {
   ActivityIndicator,
   Image,
   Dimensions,
-  TouchableOpacity
+  TouchableOpacity,
+  Platform
 } from 'react-native';
 import styles from "../styles";
 import { connect } from 'react-redux';
+import Geolocation from 'react-native-geolocation-service';
+import { Constants, Location, Permissions } from 'expo';
 
 // import CouponsMaker from "../library/couponsMaker";
 const width = Dimensions.get("window").width; //full width
@@ -109,7 +112,9 @@ class HomeScreen extends React.Component {
       city: "",
       pageNumber: 1,
       coupons: <ActivityIndicator size="large" />,
-      incrementPageClass: "hidden"
+      incrementPageClass: "hidden",
+      location: null,
+      errorMessage: null,
     };
     this.back = this.back.bind(this);
     this.next = this.next.bind(this);
@@ -117,43 +122,68 @@ class HomeScreen extends React.Component {
   static navigationOptions = {
     header: null,
   };
+
+  _getLocationAsync = async () => {
+    let { status } = await Permissions.askAsync(Permissions.LOCATION);
+    if (status !== 'granted') {
+      this.setState({
+        errorMessage: 'Permission to access location was denied',
+      });
+    }
+
+    let location = await Location.getCurrentPositionAsync({});
+    this.setState({ location });
+  };
+
   
-  componentDidMount = () => this.setState({coupons: CouponsMaker(couponData)})
-
-  next = () => {
-    this.setState({coupons: CouponsMaker(couponData2)})
-  }
-
-  back = () => {
+  componentDidMount = () => {
+    if (Platform.OS === 'android' && !Constants.isDevice) {
+      this.setState({
+        errorMessage: 'Oops, this will not work on Sketch in an Android emulator. Try it on your device!',
+      });
+    } else {
+      this._getLocationAsync();
+    }
+      // Geolocation.getCurrentPosition(
+      //     position => {
+      //         this.props.dispatch({ type: 'SETLOCATION', latitude: position.latitude, longitude: position.longitude});
+      //     },
+      //     error => {
+      //         // See error code charts below.
+      //         alert(error.code, error.message);
+      //     },
+      //     { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+      // );
+    // if (!this.props.latitude && !this.props.latitude && navigator.geolocation) navigator.geolocation.getCurrentPosition(gotPosition);
+    // function gotPosition(position) {
+    //   this.props.dispatch({ type: 'SETLOCATION', latitude: position.latitude, longitude: position.longitude});
+    // }
     this.setState({coupons: CouponsMaker(couponData)})
-  }
+  } 
 
-  increment = () => {
-    this.props.dispatch({ type: 'UPHOMEPAGE' });
-  }
+  next = () => this.setState({coupons: CouponsMaker(couponData2)})
 
-  decrement = () => {
-    this.props.dispatch({ type: 'DOWNHOMEPAGE' });
-  }
+  back = () => this.setState({coupons: CouponsMaker(couponData)})
+
+  increment = () => this.props.dispatch({ type: 'UPHOMEPAGE' });
+
+  decrement = () => this.props.dispatch({ type: 'DOWNHOMEPAGE' });
 
   render() {
+    let text = 'Waiting..';
+    if (this.state.errorMessage) {
+      text = this.state.errorMessage;
+    } else if (this.state.location) {
+      text = JSON.stringify(this.state.location);
+    }
     return (
       <View style={styles.container}>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
             <Text style={styles.homeheader}>Coupons Near You</Text>
-            <Text style={styles.homeheader}>Page {this.props.homePageNumber}</Text>
-          <TouchableOpacity
-          onPress={this.decrement
-          }
-        >
-          <Text> _ </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={this.increment
-          }
-        >
-          <Text> + </Text>
-        </TouchableOpacity>
+            {/* <Text style={styles.homeheader}>Page {this.props.homePageNumber}</Text>
+            <Text style={styles.homeheader}>latitude: {this.props.latitude}</Text>
+            <Text style={styles.homeheader}>longitude: {this.props.longitude}</Text>
+            <Text style={styles.homeheader}>{text}</Text> */}
             <View style={styles.contentContainer}>{this.state.coupons}</View>
 
         <TouchableOpacity
@@ -167,6 +197,20 @@ class HomeScreen extends React.Component {
           }
         >
           <Text> Next </Text>
+          <View style={styles.arrowContainer}>
+          <TouchableOpacity
+          onPress={this.decrement
+          }
+        >
+          <Text style={styles.arrow}>&#8678;</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={this.increment
+          }
+        >
+          <Text style={styles.arrow}>&#8680;</Text>
+        </TouchableOpacity>
+        </View>
         </TouchableOpacity>
         </ScrollView>
       </View>
@@ -175,6 +219,6 @@ class HomeScreen extends React.Component {
 }
 
 
-const mapStateToProps = state => ({ homePageNumber: state.homePageNumber, count: state.count, email: state.email, loggedinKey: state.loggedinKey })
+const mapStateToProps = state => ({ homePageNumber: state.homePageNumber, email: state.email, loggedinKey: state.loggedinKey, latitude: state.latitude, longitude: state.longitude })
 
 export default connect(mapStateToProps)(HomeScreen);

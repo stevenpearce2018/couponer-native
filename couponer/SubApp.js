@@ -5,7 +5,7 @@ import {
   Platform
 } from "react-native";
 import { connect } from 'react-redux';
-import AppNavigator from './navigation/AppNavigator';
+import AppNav from './navigation/AppNav';
 import styles from './styles';
 import { AppLoading, Asset, Font, Icon } from 'expo';
 
@@ -41,7 +41,7 @@ class SubApp extends React.Component {
               {this.props.email ? `Welcome ${this.props.email}!` : `Welcome Guest!`}
             </Text>
             {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-            <AppNavigator/>
+            <AppNav/>
           </View>
         );
       }

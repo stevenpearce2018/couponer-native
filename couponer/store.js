@@ -1,26 +1,40 @@
+import React from "react";
 import { createStore } from 'redux';
-import { AsyncStorage, Alert } from 'react-native';
+import { Alert } from 'react-native';
+
+import HomeScreen from './screens/HomeScreen';
 
 const initialState = {
-    count: 0,
     email: null,
     loggedinKey: null,
-    homePageNumber: 1
+    homePageNumber: 1,
+    latitude: null,
+    longitude: null,
+    currentNav: <HomeScreen/>,
+    navSelectedBools: {
+      home: true,
+      login: false,
+      about: false,
+      signup: false,
+      search: false
+    }
   };
   
   const reducer = (state = initialState, action) => {
     switch(action.type) {
-      case 'INCREMENT':
-        return {
-          count: state.count + 1
-        };
-      case 'DECREMENT':
-        return {
-          count: state.count - 1
-        };
       case 'LOGIN':
         return {
           email: action.email
+        };
+      case 'SETLOCATION':
+        return {
+          longitude: action.longitude,
+          latitude: action.latitude
+        };
+      case 'SETNAV':
+        return {
+          currentNav: action.nav,
+          navSelectedBools: action.navSelectedBools
         };
       case 'LOGOUT':
         return {
@@ -34,7 +48,7 @@ const initialState = {
         if (state.homePageNumber === 1) {
           Alert.alert(
           "Sorry",
-          "You Can't go under page 1.",
+          "You can't go under page 1.",
           [
             {text: 'OK'},
           ],

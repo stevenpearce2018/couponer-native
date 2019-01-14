@@ -100,6 +100,6 @@ class LoginScreen extends Component {
 }
 
 
-const mapStateToProps = state => ({ count: state.count, email: state.email, loggedinKey: state.loggedinKey })
+const mapStateToProps = state => ({ email: state.email, loggedinKey: state.loggedinKey })
 
 export default connect(mapStateToProps)(LoginScreen);
