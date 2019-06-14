@@ -70,6 +70,9 @@ const CouponsMaker = props => {
     );
   }
 };
+
+// Same schema that would be gotten from database
+
 const couponData = [
   {
     title: "title 1",

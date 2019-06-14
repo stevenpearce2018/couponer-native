@@ -23,6 +23,7 @@ const initialState = {
   const reducer = (state = initialState, action) => {
     switch(action.type) {
       case 'LOGIN':
+        alert(action.email)
         return {
           email: action.email
         };

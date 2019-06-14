@@ -43,7 +43,7 @@ class SearchScreen extends Component {
     header: null,
   };
 
-  login = () => alert("login");
+  search = () => alert("Send search state to server");
 
   render() {
     return (
@@ -83,7 +83,7 @@ class SearchScreen extends Component {
               ? styles.button
               : styles.buttonInvalid
           }
-          onPress={this.login}
+          onPress={this.search}
         >
           <Text style={styles.text}> Search </Text>
         </TouchableOpacity>

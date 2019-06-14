@@ -48,7 +48,7 @@ class LoginScreen extends Component {
     header: null,
   };
 
-  login = async () => this.props.dispatch({ type: 'LOGIN', email: this.state.email});
+  login = async () => this.props.dispatch({ type: 'LOGIN', email: this.state.email, loggedinKey: 'loggedinKey'});
 
   render() {
     return (
